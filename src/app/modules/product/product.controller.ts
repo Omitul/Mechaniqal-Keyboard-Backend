@@ -4,7 +4,7 @@ import catchAsync from '../../utils/catchAsync';
 import { ProductServices } from './product.service';
 
 const createProduct = catchAsync(async (req, res) => {
-  const result = await ProductServices.CreateRoomIntoDb(req.body);
+  const result = await ProductServices.CreateProductIntoDb(req.body);
 
   sendResponse(res, {
     success: true,
@@ -36,16 +36,8 @@ const GetAllProducts = catchAsync(async (req, res) => {
 
 const GetProductById = catchAsync(async (req, res) => {
   const id = req.params.id.trim();
-  const result = await ProductServices.GetRoomFromDbById(id);
+  const result = await ProductServices.GetProductFromDbById(id);
 
-  if (result?.isDeleted == true) {
-    res.status(404).json({
-      success: false,
-      statusCode: 404,
-      message: 'No Data Found',
-      data: [],
-    });
-  }
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -56,7 +48,7 @@ const GetProductById = catchAsync(async (req, res) => {
 
 const UpdateProduct = catchAsync(async (req, res) => {
   const id = req.params.id.trim();
-  const result = await RoomServices.UpdateRoomIntoDb(id, req.body);
+  const result = await ProductServices.UpdateProductIntoDb(id, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -68,7 +60,7 @@ const UpdateProduct = catchAsync(async (req, res) => {
 
 const DeleteRoom = catchAsync(async (req, res) => {
   const id = req.params.id.trim();
-  const result = await ProductServices.DeleteRoomFromDb(id);
+  const result = await ProductServices.DeleteProductFromDb(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

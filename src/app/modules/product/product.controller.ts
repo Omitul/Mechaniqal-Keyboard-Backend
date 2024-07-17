@@ -69,3 +69,11 @@ const DeleteRoom = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+export const ProductController = {
+  createProduct,
+  GetProductById,
+  GetAllProducts,
+  DeleteRoom,
+  UpdateProduct,
+};

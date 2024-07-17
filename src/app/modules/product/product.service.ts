@@ -23,15 +23,9 @@ const UpdateProductIntoDb = async (id: string, payload: Partial<TProduct>) => {
   return result;
 };
 
-const DeleteProductFromDb = async (id: string) => {
-  const result = await TProductModel.findByIdAndUpdate(
-    id,
-    { isDeleted: true },
-    {
-      new: true,
-    },
-  );
-  return result;
+const DeleteProductFromDb = async (ProductId: string) => {
+  const product = await TProductModel.deleteOne({ _id: ProductId });
+  return product;
 };
 
 export const ProductServices = {

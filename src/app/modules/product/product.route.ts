@@ -13,7 +13,7 @@ router.post(
 
 router.get('/products/:id', ProductController.GetProductById);
 
-router.get('/rooms', ProductController.GetAllProducts);
+router.get('/products', ProductController.GetAllProducts);
 
 router.put(
   '/rooms/:id',
@@ -23,4 +23,4 @@ router.put(
 
 router.delete('/rooms/:id', ProductController.DeleteProduct);
 
-export const RoomRoutes = router;
+export const ProductRoutes = router;

@@ -58,7 +58,7 @@ const UpdateProduct = catchAsync(async (req, res) => {
   });
 });
 
-const DeleteRoom = catchAsync(async (req, res) => {
+const DeleteProduct = catchAsync(async (req, res) => {
   const id = req.params.id.trim();
   const result = await ProductServices.DeleteProductFromDb(id);
 
@@ -74,6 +74,6 @@ export const ProductController = {
   createProduct,
   GetProductById,
   GetAllProducts,
-  DeleteRoom,
+  DeleteProduct,
   UpdateProduct,
 };

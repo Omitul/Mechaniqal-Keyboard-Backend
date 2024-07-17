@@ -1,25 +1,26 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { ProductValidation } from './product.validate';
+import { ProductController } from './product.controller';
 
 const router = express.Router();
 
 router.post(
   '/products',
   validateRequest(ProductValidation.CreateProductSchema),
-  RoomController.createRoom,
+  ProductController.createProduct,
 );
 
-router.get('/products/:id', RoomController.GetRoomById);
+router.get('/products/:id', ProductController.GetProductById);
 
-router.get('/rooms', RoomController.GetAllRoom);
+router.get('/rooms', ProductController.GetAllProducts);
 
 router.put(
   '/rooms/:id',
   validateRequest(ProductValidation.UpdateProductSchema),
-  RoomController.UpdateRoom,
+  ProductController.UpdateProduct,
 );
 
-router.delete('/rooms/:id', RoomController.DeleteRoom);
+router.delete('/rooms/:id', ProductController.DeleteProduct);
 
-x`export const RoomRoutes = router;
+export const RoomRoutes = router;

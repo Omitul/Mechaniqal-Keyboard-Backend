@@ -11,16 +11,16 @@ router.post(
   ProductController.createProduct,
 );
 
-router.get('/products/:id', ProductController.GetProductById);
+router.get('/product/:id', ProductController.GetProductById);
 
 router.get('/products', ProductController.GetAllProducts);
 
 router.put(
-  '/rooms/:id',
+  '/product/:id',
   validateRequest(ProductValidation.UpdateProductSchema),
   ProductController.UpdateProduct,
 );
 
-router.delete('/rooms/:id', ProductController.DeleteProduct);
+router.delete('/product/:id', ProductController.DeleteProduct);
 
 export const ProductRoutes = router;

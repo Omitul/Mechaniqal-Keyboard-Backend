@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express';
 import globalErrorHandler from './app/middlewares/GlobalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import { ProductRoutes } from './app/modules/product/product.route';
+import { CheckOutRoutes } from './app/modules/checkcout/checkout.router';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 ///application routes
 app.use('/api', ProductRoutes);
+app.use('/api', CheckOutRoutes);
 
 app.use(globalErrorHandler);
 app.use(notFound);

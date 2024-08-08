@@ -14,37 +14,43 @@ const createProduct = catchAsync(async (req, res) => {
   });
 });
 
-const GetAllProducts = catchAsync(async (req, res) => {
-  const result = await ProductServices.GetProductFromDb();
+const GetProducts = catchAsync(async (req, res) => {
+  const { search } = req.query;
+  console.log(req.query);
+  const searchTerm = typeof search === 'string' ? search : '';
+  try {
+    const result = await ProductServices.GetProductFromDb(searchTerm as string);
+    if (result.length == 0) {
+      res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: 'No Data Found',
+        data: result,
+      });
+    }
 
-  if (result.length == 0) {
-    res.status(404).json({
-      success: false,
-      statusCode: 404,
-      message: 'No Data Found',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Products retrieved successfully',
       data: result,
     });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Products retrieved successfully',
-    data: result,
-  });
 });
 
-const GetProductById = catchAsync(async (req, res) => {
-  const id = req.params.id.trim();
-  const result = await ProductServices.GetProductFromDbById(id);
+// const GetProductById = catchAsync(async (req, res) => {
+//   const id = req.params.id.trim();
+//   const result = await ProductServices.GetProductFromDbById(id);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Product retrieved successfully',
-    data: result,
-  });
-});
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Product retrieved successfully',
+//     data: result,
+//   });
+// });
 
 const UpdateProduct = catchAsync(async (req, res) => {
   const id = req.params.id.trim();
@@ -72,8 +78,7 @@ const DeleteProduct = catchAsync(async (req, res) => {
 
 export const ProductController = {
   createProduct,
-  GetProductById,
-  GetAllProducts,
+  GetProducts,
   DeleteProduct,
   UpdateProduct,
 };

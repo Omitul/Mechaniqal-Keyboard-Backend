@@ -6,13 +6,19 @@ const CreateProductIntoDb = async (payload: TProduct) => {
   return result;
 };
 
-const GetProductFromDbById = async (id: string) => {
-  const result = await TProductModel.findById(id);
-  return result;
-};
+// const GetProductFromDbById = async (id: string) => {
+//   const result = await TProductModel.findById(id);
+//   return result;
+// };
 
-const GetProductFromDb = async () => {
-  const result = await TProductModel.find();
+const GetProductFromDb = async (searchTerm: string) => {
+  searchTerm = searchTerm.trim().replace(/"/g, '');
+  const result = await TProductModel.find({
+    $or: [
+      { name: { $regex: searchTerm, $options: 'i' } },
+      { brand: { $regex: searchTerm, $options: 'i' } },
+    ],
+  });
   return result;
 };
 
@@ -30,7 +36,6 @@ const DeleteProductFromDb = async (ProductId: string) => {
 
 export const ProductServices = {
   CreateProductIntoDb,
-  GetProductFromDbById,
   GetProductFromDb,
   UpdateProductIntoDb,
   DeleteProductFromDb,

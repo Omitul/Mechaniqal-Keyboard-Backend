@@ -7,17 +7,17 @@ const router = express.Router();
 
 router.post(
   '/products',
-  validateRequest(ProductValidation.CreateProductSchema),
+  validateRequest(ProductValidation.CreateProductValidationSchema),
   ProductController.createProduct,
 );
 
-router.get('/product/:id', ProductController.GetProductById);
+// router.get('/product/:id', ProductController.GetProductById);
 
-router.get('/products', ProductController.GetAllProducts);
+router.get('/products', ProductController.GetProducts);
 
 router.put(
   '/product/:id',
-  validateRequest(ProductValidation.UpdateProductSchema),
+  validateRequest(ProductValidation.UpdateProductValidationSchema),
   ProductController.UpdateProduct,
 );
 

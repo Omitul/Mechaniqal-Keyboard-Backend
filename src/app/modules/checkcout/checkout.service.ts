@@ -4,6 +4,7 @@ import TCheckoutModel from './checkout.model';
 
 const CreateOrderIntoDb = async (payload: Tcheckout) => {
   try {
+    // Fetch  product quantities
     const productIds = payload.productIdAndQuantity.map(
       (item) => item.productId,
     );
@@ -11,7 +12,7 @@ const CreateOrderIntoDb = async (payload: Tcheckout) => {
       _id: { $in: productIds },
     }).exec();
 
-    // Check if requested quantities are available
+    //  quantities are available or not
     for (const item of payload.productIdAndQuantity) {
       const product = products.find((p) => p._id.toString() === item.productId);
 
@@ -25,14 +26,12 @@ const CreateOrderIntoDb = async (payload: Tcheckout) => {
 
     // Create the order
     const order = await TCheckoutModel.create(payload);
-
-    // Update product quantities
+    // Update product quantities, because decreased by the order
     await Promise.all(
       payload.productIdAndQuantity.map((item) =>
-        TProductModel.updateOne(
-          { _id: item.productId },
-          { $inc: { available_quantity: -item.quantity } },
-        ).exec(),
+        TProductModel.updateOne({
+          $inc: { available_quantity: -item.quantity },
+        }).exec(),
       ),
     );
 

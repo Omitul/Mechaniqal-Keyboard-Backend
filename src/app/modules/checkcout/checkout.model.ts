@@ -1,6 +1,18 @@
 import mongoose, { model } from 'mongoose';
 import { Tcheckout } from './checkout.interface';
 
+const ProductQuantitySchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TProduct',
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
+
 const TCheckoutSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -10,6 +22,7 @@ const TCheckoutSchema = new mongoose.Schema({
     enum: ['Bank Transfer', 'Credit Card', 'Paypal', 'Bkash', 'Nagad'],
     required: true,
   },
+  productIdAndQuantity: [ProductQuantitySchema],
 });
 
 const TCheckoutModel = model<Tcheckout>('TCheckout', TCheckoutSchema);

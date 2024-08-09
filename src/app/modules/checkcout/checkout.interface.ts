@@ -6,4 +6,8 @@ export type Tcheckout = {
     type: string;
     enum: ['Bank Transfer', 'Credit Card', 'Paypal', 'Bkash', 'Nagad'];
   };
+  productIdAndQuantity: {
+    productId: string;
+    quantity: number;
+  }[];
 };

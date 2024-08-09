@@ -15,11 +15,15 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const GetProducts = catchAsync(async (req, res) => {
-  const { search } = req.query;
-  console.log(req.query);
-  const searchTerm = typeof search === 'string' ? search : '';
+  const searchTerm = req.query.search || ''.trim();
+
+  const sortOption = req.query.sort;
+
   try {
-    const result = await ProductServices.GetProductFromDb(searchTerm as string);
+    const result = await ProductServices.GetProductFromDb(
+      searchTerm as string,
+      sortOption as string,
+    );
     if (result.length == 0) {
       res.status(404).json({
         success: false,

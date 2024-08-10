@@ -4,7 +4,7 @@ import TCheckoutModel from './checkout.model';
 
 const CreateOrderIntoDb = async (payload: Tcheckout) => {
   try {
-    // Fetch  product quantities
+    // Fetch product quantities
     const productIds = payload.productIdAndQuantity.map(
       (item) => item.productId,
     );
@@ -19,19 +19,31 @@ const CreateOrderIntoDb = async (payload: Tcheckout) => {
       if (!product) {
         throw new Error(`Product ${item.productId} not found`);
       }
-      if (item.quantity > product.available_quantity) {
-        throw new Error('Not Enough Stock');
+
+      const availableQuantity = Number(product.available_quantity);
+
+      if (isNaN(availableQuantity)) {
+        console.error(
+          `Product ${item.productId} has invalid quantity: ${product.available_quantity}`,
+        );
+        throw new Error(`Product ${item.productId} has invalid quantity`);
+      }
+
+      if (item.quantity > availableQuantity) {
+        throw new Error(`Not Enough Stock for product ${item.productId}`);
       }
     }
 
     // Create the order
     const order = await TCheckoutModel.create(payload);
-    // Update product quantities, because decreased by the order
+
+    // Update product quantities
     await Promise.all(
       payload.productIdAndQuantity.map((item) =>
-        TProductModel.updateOne({
-          $inc: { available_quantity: -item.quantity },
-        }).exec(),
+        TProductModel.updateOne(
+          { _id: item.productId },
+          { $inc: { available_quantity: -item.quantity } },
+        ).exec(),
       ),
     );
 
